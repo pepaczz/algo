@@ -1,6 +1,5 @@
 pandas
 numpy
-dtale
 matplotlib
 seaborn
 jupyterlab
@@ -8,4 +7,3 @@ ipykernel
 scikit-learn
 openpyxl
 yfinance
-ib-insync
