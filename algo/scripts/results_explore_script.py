@@ -166,10 +166,35 @@ sp500_returns['log_return_1y'].mean()
 sp500_returns['year'] = sp500_returns['date'].dt.year
 sp500_returns_yearly = sp500_returns.groupby('year').agg({'log_return_1y': 'mean'}).reset_index()
 
+# get average log return for all years together
+sp500_log_return_mean = sp500_returns['log_return_1y'].mean()
+
 #####################
 
 returns_higher_intrinsic = calculate_returns(higher_intrinsic)
 returns_lower_intrinsic = calculate_returns(lower_intrinsic)
+
+#####################
+
+returns_lower_intrinsic_1y = returns_lower_intrinsic.loc[returns_lower_intrinsic['days'] == 365, 'mean_log_return'].values[0]
+returns_higher_intrinsic_1y = returns_higher_intrinsic.loc[returns_higher_intrinsic['days'] == 365, 'mean_log_return'].values[0]
+sp500_log_return_mean
+
+# plot each of returns_lower_intrinsic_1y, returns_higher_intrinsic_1y, sp500_log_return_mean on the same plot
+# each value is bar of different color
+# use same colors that are used by default in matplotlib
+fig, ax = plt.subplots()
+plt.bar([0, 1, 2], [returns_lower_intrinsic_1y, returns_higher_intrinsic_1y, sp500_log_return_mean],
+        color=['C0', 'C1', 'black'])
+plt.xticks([0, 1, 2], ['Intrinsic Value Lower', 'Intrinsic Value Higher', 'SP500'])
+plt.ylabel('Mean Log Return')
+plt.title('Mean Log Return after 365 days')
+plt.savefig('docs/images/mean_log_return_bars.png', dpi=300)
+plt.show()
+
+
+
+#####################
 
 # plt mean log return for both dataframes on the same plot using column plot
 # plot columns side by side
@@ -178,6 +203,7 @@ bar_width = 0.35
 bar_positions = np.arange(2)
 plt.bar(bar_positions, returns_higher_intrinsic['mean_log_return'], bar_width, label='intrinsic value higher than market')
 plt.bar(bar_positions + bar_width, returns_lower_intrinsic['mean_log_return'], bar_width, label='intrinsic value lower than market')
+
 plt.xticks(bar_positions + bar_width / 2, returns_higher_intrinsic['days'])
 plt.ylabel('Mean Log Return')
 plt.xlabel('Days')
@@ -233,9 +259,9 @@ yearly_results_365_lower = yearly_results.loc[(yearly_results['days'] == 365) & 
 
 fig, ax = plt.subplots()
 plt.plot(yearly_results_365_higher['year'], yearly_results_365_higher['mean_log_return'],
-         label='Intrinsic Value Higher', color='blue')
+         label='Intrinsic Value Higher', color='C0')
 plt.plot(yearly_results_365_lower['year'], yearly_results_365_lower['mean_log_return'], label='Intrinsic Value Lower',
-         color='orange')
+         color='C1')
 plt.plot(sp500_returns_yearly['year'], sp500_returns_yearly['log_return_1y'], label='SP500', color='black', ls='--')
 plt.xticks(years_range, years_range)
 plt.ylabel('Mean Log Return')
