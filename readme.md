@@ -2,7 +2,7 @@
 
 ## Where to find documentation
 
-- [Non-technical summary of the project](docs/project_summary.pdf)
+- **[Non-technical summary of the project](docs/project_summary.pdf)**
 - [Intrinsic value model definition](docs/intrinsic_value_model.pdf)
 - [Readme](readme.md) (this file)
 
