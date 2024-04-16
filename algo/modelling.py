@@ -1,4 +1,8 @@
-# taylo rule: https://www.kaggle.com/code/aradhanasaha/taylor-s-rule
+"""
+This module contains functions to calculate the intrinsic value of a company using the free cash flow to firm method.
+"""
+
+
 import numpy as np
 import numpy_financial as npf
 import algo.data_acquisition as da
@@ -11,6 +15,7 @@ from scipy.optimize import minimize_scalar, minimize
 
 
 def get_intrinsic_value(ticker, date, optimize_perp_g_rate=False):
+    """Calculate the intrinsic value of a company using the free cash flow to firm method."""
 
     year = pd.to_datetime(date).year
 

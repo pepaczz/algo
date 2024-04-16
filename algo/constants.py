@@ -1,6 +1,6 @@
 import os
 
-SEC_USER_AGENT = 'joklo123@gmail.com'
+SEC_USER_AGENT = 'muj_email@gmail.com'
 SEC_HEADERS = {'User-Agent': SEC_USER_AGENT}
 
 REQUESTS_HEADERS = {'User-agent': 'Mozilla/5.0'}
@@ -42,9 +42,6 @@ FILE_BETAS = 'betas.csv'
 
 FLD_SHARES_OUTSTANDING = 'data/shares_outstanding'
 FILE_SHARES_OUTSTANDING = 'shares_outstanding.csv'
-
-FLD_SP500_RETURNS = 'data/sp500_returns'
-FILE_SP500_RETURNS = 'sp500_returns.csv'
 
 FLD_SP500_RETURNS = 'data/sp500_returns'
 FILE_SP500_RETURNS = 'sp500_returns.csv'

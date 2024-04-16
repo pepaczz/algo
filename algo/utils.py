@@ -6,10 +6,12 @@ import numpy as np
 
 
 def if_none(val, default):
+    """Returns default if val is None, otherwise returns val."""
     return default if val is None else val
 
 
 def if_nan_none(val, default):
+    """Returns default if val is None or NaN, otherwise returns val."""
     if (val is None) or (np.isnan(val)):
         return default
     else:
@@ -17,6 +19,7 @@ def if_nan_none(val, default):
 
 
 def maybe_make_dir(directory):
+    """Creates directory if it does not exist."""
     if not os.path.exists(directory):
         os.makedirs(directory)
     return directory
@@ -40,7 +43,6 @@ def upsert_results(df, add_timestamp=True):
         result = pd.concat([result, df])
         result = result.drop_duplicates(subset=['ticker', 'date'], keep='last')
         result.to_csv(full_path, index=False)
-
     return None
 
 
@@ -68,7 +70,6 @@ def upsert_into_df(df, save_fld, save_file, index_cols, add_created=True):
         result = pd.concat([result, df])
         result = result.drop_duplicates(subset=index_cols, keep='last')
         result.to_csv(full_path, index=False)
-
     return None
 
 

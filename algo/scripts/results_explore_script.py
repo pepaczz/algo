@@ -52,7 +52,7 @@ plt.ylabel('Share Price')
 plt.title('Intrinsic Value vs Share Price')
 plt.grid()
 plt.legend()
-plt.savefig('writedown/images/scatter_intrinsic_market.png', dpi=300)
+plt.savefig('docs/images/scatter_intrinsic_market.png', dpi=300)
 plt.show()
 
 
@@ -76,7 +76,7 @@ plt.xlabel('Year')
 plt.ylabel('Correlation')
 plt.title('Correlation between Intrinsic Value and Share Price')
 plt.grid()
-plt.savefig('writedown/images/correlation_intrinsic_market.png', dpi=300)
+plt.savefig('docs/images/correlation_intrinsic_market.png', dpi=300)
 plt.show()
 
 
@@ -133,29 +133,6 @@ def calculate_returns(df, days=[100, 365]):
 
     return result
 
-
-
-
-returns_higher_intrinsic = calculate_returns(higher_intrinsic)
-returns_lower_intrinsic = calculate_returns(lower_intrinsic)
-
-
-# plt mean log return for both dataframes on the same plot using column plot
-# plot columns side by side
-fig, ax = plt.subplots()
-bar_width = 0.35
-bar_positions = np.arange(2)
-plt.bar(bar_positions, returns_higher_intrinsic['mean_log_return'], bar_width, label='intrinsic value higher than market')
-plt.bar(bar_positions + bar_width, returns_lower_intrinsic['mean_log_return'], bar_width, label='intrinsic value lower than market')
-plt.xticks(bar_positions + bar_width / 2, returns_higher_intrinsic['days'])
-plt.ylabel('Mean Log Return')
-plt.xlabel('Days')
-plt.title('Mean Log Return after 100 and 365 days')
-# add legend to top left
-plt.legend(loc='upper left')
-plt.savefig('writedown/images/mean_log_return_bars.png', dpi=300)
-plt.show()
-
 ###########################
 
 # load sp500 returns
@@ -189,8 +166,26 @@ sp500_returns['log_return_1y'].mean()
 sp500_returns['year'] = sp500_returns['date'].dt.year
 sp500_returns_yearly = sp500_returns.groupby('year').agg({'log_return_1y': 'mean'}).reset_index()
 
+#####################
 
-# return since
+returns_higher_intrinsic = calculate_returns(higher_intrinsic)
+returns_lower_intrinsic = calculate_returns(lower_intrinsic)
+
+# plt mean log return for both dataframes on the same plot using column plot
+# plot columns side by side
+fig, ax = plt.subplots()
+bar_width = 0.35
+bar_positions = np.arange(2)
+plt.bar(bar_positions, returns_higher_intrinsic['mean_log_return'], bar_width, label='intrinsic value higher than market')
+plt.bar(bar_positions + bar_width, returns_lower_intrinsic['mean_log_return'], bar_width, label='intrinsic value lower than market')
+plt.xticks(bar_positions + bar_width / 2, returns_higher_intrinsic['days'])
+plt.ylabel('Mean Log Return')
+plt.xlabel('Days')
+plt.title('Mean Log Return after 100 and 365 days')
+# add legend to top left
+plt.legend(loc='upper left')
+plt.savefig('docs/images/mean_log_return_bars.png', dpi=300)
+plt.show()
 
 ##############
 
@@ -253,7 +248,7 @@ plt.legend()
 plt.grid()
 plt.xticks(rotation=45)
 plt.tight_layout()
-plt.savefig('writedown/images/yearly_mean_returns_comparison.png', dpi=300)
+plt.savefig('docs/images/yearly_mean_returns_comparison.png', dpi=300)
 
 
 ########
@@ -306,7 +301,7 @@ plt.ylabel('Implied Perpetuity Growth Rate')
 plt.title('Median Implied Perpetuity Growth Rate')
 plt.legend()
 plt.grid()
-plt.savefig('writedown/images/implied_perp_growth_rate.png', dpi=300)
+plt.savefig('docs/images/implied_perp_growth_rate.png', dpi=300)
 plt.show()
 
 # share of growth rates higher than C

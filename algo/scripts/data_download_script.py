@@ -1,19 +1,9 @@
+"""
+This script is used to download data from the internet and store it in the data folder.
+"""
 
-import os
-from importlib import reload
-import sys
-import traceback
-import pandas as pd
-import numpy as np
+
 import algo.data_acquisition as da
-import algo.constants as const
-import algo.utils as utils
-import algo.modelling as model
-
-reload(model)
-reload(da)
-reload(const)
-reload(utils)
 
 available_tickers = da.get_available_tickers()
 available_tickers = ['MAAI']

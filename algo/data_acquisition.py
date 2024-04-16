@@ -14,7 +14,7 @@ from algo.fetched_data import sec_companies
 
 
 def get_sp500_list():
-    """Get the list of S&P 500 companies"""
+    """Gets the list of S&P 500 companies"""
 
     url = 'https://en.wikipedia.org/wiki/List_of_S%26P_500_companies'
     data = pd.read_html(url)
@@ -27,7 +27,7 @@ def get_sp500_list():
 
 
 def get_sp500_history():
-    """Get the list of S&P 500 companies and their date added to the index."""
+    """Gets the list of S&P 500 companies and their date added to the index."""
 
     url = 'https://en.wikipedia.org/wiki/List_of_S%26P_500_companies'
     data = pd.read_html(url)
@@ -98,7 +98,9 @@ def get_live_price(ticker):
 
 
 def get_10k_dates(ticker, concept='OperatingIncomeLoss', year_from=None, year_to=None):
-    """Gets the 10-K dates"""
+    """Gets available dates by calling Concept API for a given ticker and concept
+    Not used - data are retrieved from .csv archive files
+    """
     df = get_concept_by_ticker(ticker, concept)
 
     # filter for relevant year only if required
@@ -112,7 +114,9 @@ def get_10k_dates(ticker, concept='OperatingIncomeLoss', year_from=None, year_to
 
 
 def get_concept_by_ticker(ticker, concept, headers=const.SEC_HEADERS):
-    """Gets the concept data for input ticker and concept"""
+    """Downloads data from SEC for ticker and concept
+    Not used - data are retrieved from .csv archive files
+    """
     cik = sec_companies.loc[sec_companies['ticker'] == ticker, 'cik_str'].to_list()[0]
     try:
         concept_response = requests.get(f'https://data.sec.gov/api/xbrl/companyconcept/CIK{cik}/us-gaap/{concept}.json',
@@ -123,8 +127,8 @@ def get_concept_by_ticker(ticker, concept, headers=const.SEC_HEADERS):
 
 
 def get_single_observation_api(ticker, concept, year, return_value=True):
-    """Get a single observation for a given ticker, concept and year from SEC api
-    This function will be deprecated as data are retrieved from .csv archive files
+    """Gets single observation for ticker, concept and year from SEC api
+    Not used - data are retrieved from .csv archive files
     On the other hand the most recent data might not be available in the archive (? check)
     """
     df = get_concept_by_ticker(ticker, concept)
@@ -146,8 +150,8 @@ def get_single_observation_api(ticker, concept, year, return_value=True):
 
 
 def get_single_observation(ticker, concept, year, return_value=True):
-    """Get a single observation for a given ticker, concept and year. Load from .csv
-    return_value is kept for compatibility with get_single_observation_api
+    """Gets a single observation for ticker, concept and year. Uses csv data.
+    Parameter return_value is kept for backward compatibility with get_single_observation_api
     """
     data_raw = pd.read_csv(f'{const.FLD_STATEMENTS}/{ticker}.csv')
     data_raw['year'] = pd.to_datetime(data_raw['date']).dt.year
@@ -165,7 +169,7 @@ def get_single_observation(ticker, concept, year, return_value=True):
 
 def get_single_observation_non_usd(ticker, concept, year, return_value=True, units='shares'):
     """Equivalent of get_single_observation for non-USD units.
-    This function will be deprecated as data are retrieved from .csv archive files
+    Not used - data are retrieved from .csv archive files
     On the other hand the most recent data might not be available in the archive (? check)
     """
     headers = {'User-Agent': const.SEC_USER_AGENT}
@@ -193,7 +197,7 @@ def get_single_observation_non_usd(ticker, concept, year, return_value=True, uni
 
 
 def download_ticker_beta(ticker, headers=const.YFINANCE_HEADERS):
-    """Get the beta for a given ticker."""
+    """Gets the beta for a given ticker"""
     site = "https://finance.yahoo.com/quote/" + ticker + "?p=" + ticker
     # price_data = pd.read_html(StringIO(requests.get(site, headers=headers).text))[0]
     response = pd.read_html(StringIO(requests.get(site, headers=headers).text))
@@ -206,7 +210,7 @@ def download_ticker_beta(ticker, headers=const.YFINANCE_HEADERS):
 
 
 def download_all_betas(tickers_list, headers=const.YFINANCE_HEADERS):
-    """Download betas for a list of tickers."""
+    """Downloads betas for a list of tickers."""
     # tickers_list = available_tickers
     downloads_list = []
     for ticker in tickers_list:
@@ -220,14 +224,15 @@ def download_all_betas(tickers_list, headers=const.YFINANCE_HEADERS):
 
 
 def get_beta(ticker):
-    """Get the beta for a given ticker."""
+    """Gets the beta for a given ticker."""
     betas = pd.read_csv(f'{const.FLD_BETAS}/{const.FILE_BETAS}')
     return betas.loc[betas['ticker'] == ticker, 'beta'].values[0]
 
 
 def download_ticker_shares_outstanding(ticker, date):
-    """Get the number of shares outstanding for a given ticker and date.
-    NOT USED ! Due to short history, e.g. MSFT only back to 2022
+    """Gets the number of shares outstanding for a given ticker and date.
+    Not used - data are retrieved from .csv archive files
+    Also there is a short history, e.g. MSFT only back to 2022
     """
     yf_ticker = yf.Ticker(ticker)
     shares_full = yf_ticker.get_shares_full().sort_index()
@@ -236,8 +241,8 @@ def download_ticker_shares_outstanding(ticker, date):
 
 
 def download_all_shares_outstanding(tickers_list):
-    """Download shares outstanding for a list of tickers.
-    NOT USED !
+    """Downloads shares outstanding for a list of tickers.
+    Not used - data are retrieved from .csv archive files
     """
     # tickers_list = get_available_tickers()
     for idx, ticker in enumerate(tickers_list):
@@ -262,7 +267,7 @@ def download_all_shares_outstanding(tickers_list):
 
 
 def get_share_price(ticker, date):
-    """Get share price for a given ticker and date."""
+    """Gets share price for a given ticker and date."""
     # load history from csv
     try:
         history = pd.read_csv(f'{const.FLD_SHARE_PRICES}/{ticker}.csv')
@@ -281,7 +286,7 @@ def get_share_price(ticker, date):
 
 
 def get_share_price_around_date(ticker, date, direction='before', n_days=1):
-    """Get share price for a given ticker and date."""
+    """Gets share price for a given ticker and date."""
     # shift date by n_days
     date_shifted = pd.to_datetime(date) + pd.DateOffset(days=n_days)
 
@@ -314,7 +319,7 @@ def get_share_price_around_date(ticker, date, direction='before', n_days=1):
 
 
 def get_shares_outstanding_yf_data(ticker, date):
-    """Get the number of shares outstanding for a given ticker and date."""
+    """Gets the number of shares outstanding for a given ticker and date."""
     shares_outstanding = pd.read_csv(f'{const.FLD_SHARES_OUTSTANDING}/{ticker}.csv')
     shares_before_date = shares_outstanding.loc[shares_outstanding['Date'] <= date, 'Shares']
 
@@ -325,13 +330,14 @@ def get_shares_outstanding_yf_data(ticker, date):
 
 
 def get_growth_estimate(ticker):
+    """Gets the 5-year growth estimate for a given ticker."""
     analysts_info = get_analysts_info(ticker)['Growth Estimates']
     growth_5y_str = analysts_info.loc[analysts_info['Growth Estimates'] == 'Next 5 Years (per annum)', ticker].values[0]
     return float(growth_5y_str.strip('%'))/100
 
 
 def get_ticker_dates(ticker, limit_to_defined_years=True):
-    """Returns the list of available dates for a given ticker."""
+    """Returns list of available dates for a given ticker."""
     res = pd.read_csv(os.path.join(const.FLD_STATEMENTS, f'{ticker}.csv'))['date'] \
         .drop_duplicates() \
         .sort_values()\
@@ -344,11 +350,11 @@ def get_ticker_dates(ticker, limit_to_defined_years=True):
 
 
 def get_available_tickers(start_from=None):
-    """Returns the list of available tickers."""
+    """Returns list of available tickers."""
     all_files = glob.glob(os.path.join(const.FLD_STATEMENTS, "*.csv"))
     tickers = [ntpath.basename(f).replace('.csv', '') for f in all_files]
 
-    # start from a specific ticker
+    # start from a specific ticker if required
     if start_from is not None:
         start_idx = tickers.index(start_from)
         tickers = tickers[start_idx:]
@@ -356,10 +362,9 @@ def get_available_tickers(start_from=None):
     return tickers
 
 
-
 def download_all_share_prices(tickers_list):
     # tickers_list = get_available_tickers()
-    """Download all share prices for available tickers."""
+    """Downloads all share prices for available tickers."""
 
     for idx, ticker in enumerate(tickers_list):
         # retrieve share price history from Yahoo Finance
@@ -380,7 +385,7 @@ def download_all_share_prices(tickers_list):
 
 
 def download_sp500_returns():
-    """Get the S&P 500 year-over-year returns."""
+    """Downloads S&P 500 Y-O-Y returns for the last 30 years."""
     sp500 = yf.Ticker('^GSPC')
     history = sp500.history(period="30y").sort_index()
     history = history.reset_index(drop=False)
@@ -395,7 +400,7 @@ def download_sp500_returns():
 
 
 def get_sp500_return(date):
-    """Get the S&P 500 year-over-year returns for a given date."""
+    """Gets the S&P 500 year-over-year returns for a given date."""
     returns = pd.read_csv(f'{const.FLD_SP500_RETURNS}/{const.FILE_SP500_RETURNS}')
 
     # get the last available observation before the date
@@ -407,7 +412,7 @@ def get_sp500_return(date):
 
 
 def get_accepted_date(ticker, drop_count_col=True):
-    """Get accepted date for each statement date given ticker."""
+    """Gets accepted date for each statement date given ticker."""
     res = pd.read_csv(os.path.join(const.FLD_STATEMENTS, f'{ticker}.csv'))[['accepted', 'date']]
 
     # count number of rows per date
@@ -428,7 +433,6 @@ def materialize_accepted_dates_DEPREC():
     """Materialize the accepted dates for all tickers.
     NOT USED - use sec_data_processing_script.py instead
     """
-
     # get all tickers in results
     tickers = get_available_tickers()
     acc_dates = []

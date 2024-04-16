@@ -1,3 +1,7 @@
+"""
+This module contains functions to fetch frequently used datasets to keep them in memory.
+"""
+
 import numpy as np
 import pandas as pd
 import os

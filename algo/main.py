@@ -1,7 +1,8 @@
-# taylo rule: https://www.kaggle.com/code/aradhanasaha/taylor-s-rule
-# https://www.sec.gov/dera/data/financial-statement-data-sets
-# https://www.wallstreetprep.com/knowledge/cost-of-equity/
-
+"""
+Main script for running the intrinsic value calculation for all available tickers
+In the first part, the script will estimate the implied perpetual growth rate
+In the second part, the script will calculate the intrinsic value
+"""
 import os
 from importlib import reload
 import pandas as pd
@@ -11,20 +12,16 @@ import algo.constants as const
 import algo.utils as utils
 import algo.modelling as model
 
-reload(model)
-reload(da)
-reload(const)
-reload(utils)
 
 available_tickers = da.get_available_tickers()
 # available_tickers = available_tickers[20:40]
 # available_tickers = ['A', 'AAL', 'AAPL', 'ABBV', 'ABNB']
 # available_tickers = ['AAPL']
 
-optimize_perp_g_rate = False  # False  # True
+optimize_perp_g_rate = False
 
 # iterate over all available tickers
-for idx, ticker in enumerate(available_tickers):  # [:10]):
+for idx, ticker in enumerate(available_tickers):
     # ticker = available_tickers[0]  # debug
     print(ticker)
 

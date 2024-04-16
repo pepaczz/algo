@@ -1,3 +1,7 @@
+"""
+This script processes the equity risk premium data from the excel file and saves it to a csv file.
+"""
+
 import pandas as pd
 import algo.constants as const
 import os
