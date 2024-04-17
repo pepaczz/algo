@@ -1,3 +1,8 @@
+"""
+This script is used to explore the results of the intrinsic value calculation.
+The script is a bit messy and contains a lot of code.
+TODO: refactor the code into functions and classes.
+"""
 import os
 from importlib import reload
 import pandas as pd
@@ -78,9 +83,6 @@ plt.title('Correlation between Intrinsic Value and Share Price')
 plt.grid()
 plt.savefig('docs/images/correlation_intrinsic_market.png', dpi=300)
 plt.show()
-
-
-
 
 #######
 
@@ -191,7 +193,6 @@ plt.ylabel('Mean Log Return')
 plt.title('Mean Log Return after 365 days')
 plt.savefig('docs/images/mean_log_return_bars.png', dpi=300)
 plt.show()
-
 
 
 #####################
